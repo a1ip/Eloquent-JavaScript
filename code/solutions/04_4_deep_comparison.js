@@ -2,24 +2,20 @@ function deepEqual(a, b) {
   if (a === b) return true;
   
   if (a == null || typeof a != "object" ||
-      b == null || typeof b != "object")
-    return false;
-  
-  var propsInA = 0, propsInB = 0;
+      b == null || typeof b != "object") return false;
 
-  for (var prop in a)
-    propsInA += 1;
+  let keysA = Object.keys(a), keysB = Object.keys(b);
 
-  for (var prop in b) {
-    propsInB += 1;
-    if (!(prop in a) || !deepEqual(a[prop], b[prop]))
-      return false;
+  if (keysA.length != keysB.length) return false;
+
+  for (let key of keysA) {
+    if (!keysB.includes(key) || !deepEqual(a[key], b[key])) return false;
   }
 
-  return propsInA == propsInB;
+  return true;
 }
 
-var obj = {here: {is: "an"}, object: 2};
+let obj = {here: {is: "an"}, object: 2};
 console.log(deepEqual(obj, obj));
 // → true
 console.log(deepEqual(obj, {here: 1, object: 2}));
